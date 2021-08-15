@@ -17,6 +17,7 @@
 ///Add Above
 #if  defined(__BL_SHOP_SOLD__)
 		r_item.m_Sold = std::make_unique< SShopSoldItemData >(ch->GetName(), r_item.pkItem);
+		m_pkPC->ChatPacket(CHAT_TYPE_INFO, "%s, bought: %s!", ch->GetName(), r_item.pkItem->GetName());
 #endif
 
 //Find in : bool CShop::AddGuest(LPCHARACTER ch, DWORD owner_vid, bool bOtherEmpire)
@@ -43,6 +44,7 @@
 			const auto& SoldData = item.m_Sold;
 			if (SoldData != nullptr) {
 				strlcpy(pack2.items[i].szBuyerName, SoldData->sBuyerName.c_str(), sizeof(pack2.items[i].szBuyerName));
+				std::strftime(pack2.items[i].szBuyTime, sizeof(pack2.items[i].szBuyTime), "%d-%m-%Y %X", std::localtime(&SoldData->t));
 				thecore_memcpy(pack2.items[i].alSockets, SoldData->alSockets, sizeof(pack2.items[i].alSockets));
 				thecore_memcpy(pack2.items[i].aAttr, SoldData->aAttr, sizeof(pack2.items[i].aAttr));
 			}
@@ -62,6 +64,7 @@
 		if (SoldData != nullptr) {
 			pack2.item.vnum = m_itemVector[pos].vnum;
 			strlcpy(pack2.item.szBuyerName, SoldData->sBuyerName.c_str(), sizeof(pack2.item.szBuyerName));
+			std::strftime(pack2.item.szBuyTime, sizeof(pack2.item.szBuyTime), "%d-%m-%Y %X", std::localtime(&SoldData->t));
 			thecore_memcpy(pack2.item.alSockets, SoldData->alSockets, sizeof(pack2.item.alSockets));
 			thecore_memcpy(pack2.item.aAttr, SoldData->aAttr, sizeof(pack2.item.aAttr));
 		}
@@ -76,4 +79,5 @@
 ///Add
 #if defined(__BL_SHOP_SOLD__)
 		memset(pack2.item.szBuyerName, 0, sizeof(pack2.item.szBuyerName));
+		memset(pack2.item.szBuyTime, 0, sizeof(pack2.item.szBuyTime));
 #endif

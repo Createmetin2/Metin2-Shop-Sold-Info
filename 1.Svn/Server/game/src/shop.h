@@ -11,7 +11,7 @@
 		struct SShopSoldItemData
 		{
 			SShopSoldItemData(const char* szBuyerName, LPITEM item)
-				: sBuyerName(szBuyerName)
+				: sBuyerName(szBuyerName), t(time(nullptr))
 			{
 				thecore_memcpy(alSockets, item->GetSockets(), sizeof(alSockets));
 				thecore_memcpy(aAttr, item->GetAttributes(), sizeof(aAttr));
@@ -20,6 +20,7 @@
 			std::string sBuyerName;
 			long alSockets[ITEM_SOCKET_MAX_NUM];
 			TPlayerItemAttribute aAttr[ITEM_ATTRIBUTE_MAX_NUM];
+			time_t t;
 		};
 #endif
 
